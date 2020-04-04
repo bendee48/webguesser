@@ -7,10 +7,13 @@
     </style>
   </head>
   <body>
+  <p>Secret number is <%= number %></p>
+  <p>Number of guesses left: <%= guesses %></p>
   <form>
     <input type='text' name='guess' />
     <input type='submit' value='Guess!' />
     <p><%= msg %></p>
   </form>
+  <p><%= win_msg %></p>
   </body>
 </html>

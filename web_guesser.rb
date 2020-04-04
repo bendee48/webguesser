@@ -1,26 +1,44 @@
 require 'sinatra'
 require 'sinatra/reloader'
 
-SECRET_NUMBER = rand(1..100)
+@@secret_number = rand(1..100)
+@@guesses = 6
 
 get '/' do
-  guess = params['guess'].to_i - SECRET_NUMBER
+  guess = params['guess'].to_i - @@secret_number
   msg, background = check_guess(guess)
-  erb :index, :locals => { :number => SECRET_NUMBER, :msg => msg,
-                           :background => background
-                         }
+  win_msg = check_for_win(guess)
+  @@guesses -= 1
+  erb :index, locals: { number: @@secret_number, msg: msg,
+                        background: background, guesses: @@guesses,
+                        win_msg: win_msg }
 end
 
 def check_guess(guess)
-  if guess == 0
-    return ["Yes. The secret number is #{SECRET_NUMBER}!", "#06b004"]
+  if guess.zero?
+    ["Yes. The secret number is #{@@secret_number}!", '#06b004']
   elsif guess > 5
-    return ["Guess is way too high.", "#ff031c"]
-  elsif guess < 5 && guess > 0
-    return ["Guess is too high.", "#ff99a3"]
-  elsif guess < 0 && guess > -5
-    return ["Guess is too low.", "#ff99a3"]
+    ['Guess is way too high.', '#ff031c']
+  elsif guess.positive? && guess < 5
+    ['Guess is too high.', '#ff99a3']
+  elsif guess.negative? && guess > -5
+    ['Guess is too low.', '#ff99a3']
   else
-    return ["Guess is way too low.", "#ff031c"]
+    ['Guess is way too low.', '#ff031c']
   end
+end
+
+def check_for_win(guess)
+  if guess.zero?
+    generate
+    "New scret number generated. Let's go again."
+  elsif @@guesses == 1
+    generate
+    "That's the end of the road. New number generated. Try again."
+  end
+end
+
+def generate
+  @@secret_number = rand(1..100)
+  @@guesses = 6
 end
