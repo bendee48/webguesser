@@ -1,1 +1,1 @@
-#JumpStartLab's Sinatra Tutorial - Number gussing game.#
+# JumpStartLab's Sinatra Tutorial - Number guessing game.
