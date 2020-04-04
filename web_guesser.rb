@@ -6,13 +6,14 @@ require 'sinatra/reloader'
 
 get '/' do
   guess = params['guess'].to_i - @@secret_number
+  cheat = true if params['cheat']
   msg, background = check_guess(guess)
   win_msg = check_for_win(guess)
   @@guesses -= 1
   erb :index, locals: { number: @@secret_number, msg: msg,
                         background: background, guesses: @@guesses,
-                        win_msg: win_msg }
-end
+                        win_msg: win_msg, cheat: cheat }
+end 
 
 def check_guess(guess)
   if guess.zero?

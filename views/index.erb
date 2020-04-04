@@ -7,7 +7,9 @@
     </style>
   </head>
   <body>
-  <p>Secret number is <%= number %></p>
+  <% if cheat %>
+    <p>You've activated cheat mode. Secret number is <%= number %></p>
+  <% end %>
   <p>Number of guesses left: <%= guesses %></p>
   <form>
     <input type='text' name='guess' />
